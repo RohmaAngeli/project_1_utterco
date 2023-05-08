@@ -1,0 +1,7 @@
+body{margin-top:10px;}
+.avatar{
+width:100px;
+height:100px;
+shape-image-threshold: unset;
+color: aliceblue;
+}		
