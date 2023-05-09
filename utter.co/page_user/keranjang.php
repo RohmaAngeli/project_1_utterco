@@ -13,6 +13,12 @@
 <body bgcolor="#33CCCC">
   <?php
     include('koneksi.php');
+    if(isset($_GET['page'])){
+    @$aksi = $_GET['aksi'];
+    switch ($aksi){
+      //Menampilkan data kelola
+      default:
+          
     @$id=$row['id_produk']; 
     $query_lihat="SELECT * FROM tbl_produk WHERE id_produk='$id';"; 
     $hasil=mysqli_query($db_koneksi, $query_lihat); 
@@ -30,13 +36,14 @@
     </div>
     <?php
     @$iduser=$_SESSION['username']; 
-      $query_lihat="SELECT DISTINCT * FROM tbl_keranjang WHERE username='$iduser';"; 
+      $query_lihat="SELECT * FROM tbl_keranjang WHERE username='$iduser';"; 
       $query=mysqli_query($db_koneksi, $query_lihat); 
       ?>
 
 
     <div>
       <div>
+        <form action="" method="post" role="form" enctype='multipart/form-data'>
         <!-- <form action="" method="post" name="autoSumForm"> -->
           <table class="table" style="min-width: 1000px !important;width: 100%; text-align: center;">
             <thead class="thead-primary" style="background: #c49b63;">
@@ -141,40 +148,63 @@ $juml_nilai = array_sum($subtotalsum);
       			<span style="display: block; text-transform: uppercase; color: #c49b63; font-size:40px;">RP. <?php echo $juml_nilai;?></span>
       		</p>
       	</div>
-        <form action="" method="post" role="form" enctype='multipart/form-data'>
-      	<p class="text-center"><a href="checkout.html" class="btn btn-primary py-3 px-4" style="width:100%; background-color:#c49b63; border-color:#fff;"><b>Checkout</b></a></p>
+        <!-- <form action="" method="post" role="form" enctype='multipart/form-data'> -->
+      	<p class="text-center"><a href="?page=keranjang&aksi=checkout" class="btn btn-primary py-3 px-4" style="width:100%; background-color:#c49b63; border-color:#fff;"><b>Checkout</b></a></p>
         <input type="submit" name="submit">
         </form>
+        <?php 
+          include 'koneksi.php';
+          if(isset($_POST['submit'])) {
+
+            $tanggal_transaksi = date('Y-m-d H-i-s');
+            $sql_ins = "INSERT INTO header_transaksi (tanggal_transaksi, total_harga) VALUES ('$tanggal_transaksi','$juml_nilai')";
+            $query= mysqli_query($db_koneksi, $sql_ins);
+            $id_transaksi = mysqli_insert_id($db_koneksi);
+
+            @$iduser=$_SESSION['username']; 
+            $query_lihat="SELECT * FROM tbl_keranjang WHERE username='$iduser';"; 
+            $query_cart=mysqli_query($db_koneksi, $query_lihat); 
+            // $rows = mysqli_fetch_array($query_cart);
+
+            while($rows = mysqli_fetch_array($query_cart)){
+            // foreach($rows as $cart => $val){
+            // foreach($_SESSION["cart"] as $cart => $val){
+                $sql = "INSERT INTO detail_transaksi (id_header_transaksi, id_produk, jumlah) VALUES ('.$id_transaksi.',".$rows["id_produk"].",".$rows["jumlah_produk"].")"; 
+                $query = mysqli_query($db_koneksi, $sql);
+            }
+
+            @$iduser=$_SESSION['username']; 
+            $query_delete = mysqli_query($db_koneksi,"delete from tbl_keranjang where username='$iduser'");
+            // header("Location:?page=histori");
+            // echo "<script> alert('Produk telah tertambah di halaman histori');</script>";
+            echo "Data Telah tertambahkan ke transaksi! <br>";
+            echo '<span style="color:blue"><a href="?page=histori"><b><u><i>Lihat histori transaksi</i></u></b></a></span>';
+
+          }
+        ?>
       </div>
     </div>
 
   </div>
 </section>
 
+<?php
+      break; 
+      case "delete":
+         include "page_admin/form_tambahmenu.php";
+         break;
+      case "update":
+         include "page_admin/update_menu.php";
+         break;
+      case "checkout":
+         include "page_user/checkout.php";
+         break;
+      }
+    }else{
+      include "?page=keranjang";
+      }
+   ?> 
 
-<?php 
-include 'koneksi.php';
-if(isset($_POST['submit'])) {
-
-  $tanggal_transaksi = date('Y-m-d H-i-s');
-  $sql_ins = "INSERT INTO header_transaksi (tanggal_transaksi, total_harga) VALUES ('$tanggal_transaksi','$juml_nilai')";
-  $query= mysqli_query($db_koneksi, $sql_ins);
-  $id_transaksi = mysqli_insert_id($db_koneksi);
-
-  @$iduser=$_SESSION['username']; 
-  $query_lihat="SELECT * FROM tbl_keranjang WHERE username='$iduser';"; 
-  $query_cart=mysqli_query($db_koneksi, $query_lihat); 
-  // $rows = mysqli_fetch_array($query_cart);
-
-  while($rows = mysqli_fetch_array($query_cart)){
-  // foreach($rows as $cart => $val){
-  // foreach($_SESSION["cart"] as $cart => $val){
-      $sql = "INSERT INTO detail_transaksi (id_header_transaksi, id_produk, jumlah) VALUES ('.$id_transaksi.',".$rows["id_produk"].",".$rows["jumlah_produk"].")"; 
-
-      $query = mysqli_query($db_koneksi, $sql);
-  }
-}
-?>
 </body>
 
 </html>
