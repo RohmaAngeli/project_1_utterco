@@ -68,7 +68,7 @@
                 </td>
 
                 <td>
-                  <h3 style="color:#fff; font-size: 18px; text-align:left;"><?php echo $data["alamat"];?>, <?php echo $data["kelurahan"];?>, <?php echo $data["kecamatan"];?>, <?php echo $data["kota"];?>, <?php echo $data["kode_pos"];?></h3>
+                  <h3 style="color:#fff; font-size: 18px; text-align:left;"><?php echo $data["alamat"];?>, <?php echo $data["kelurahan"];?>, kec. <?php echo $data["kecamatan"];?>, <?php echo $data["kota"];?>, <?php echo $data["kode_pos"];?></h3>
                 </td>
 
                 <td>
@@ -100,14 +100,8 @@
     </div>
    <?php
       break; 
-      case "create":
-         include "page_admin/form_tambahmenu.php";
-         break;
-      case "update":
-         include "page_admin/update_menu.php";
-         break;
       case "delete":
-         include "page_admin/delete_menu.php";
+         include "page_admin/delete_user.php";
          break;
       }
     }else{

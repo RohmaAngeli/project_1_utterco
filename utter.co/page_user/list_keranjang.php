@@ -1,14 +1,5 @@
 <div class="container bootstrap snippets bootdey"style="margin-top:12%; margin-bottom:8%;">
-  <div class="container" data-aos="fade-up">
-<?php
-    include('koneksi.php');
-    if(isset($_GET['page'])){
-    @$aksi = $_GET['aksi'];
-    switch ($aksi){
-      //Menampilkan data kelola
-      default:
-      ?>
-
+   <div class="container" data-aos="fade-up">
       <div class="section-title">
          <h2>Cart</h2>
          <p>Halaman Keranjang</p>
@@ -46,7 +37,7 @@
               <!-- <form action="" method="post" name="autoSumForm"> -->
             <tbody>
                 <tr class="text-center" style="text-align: center !important; vertical-align: middle; border: 1px solid transparent !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important">
-                <td class="product-remove" style="padding-top:5%;padding-bottom:5%;"><a href="?page=keranjang&aksi=delete&id_keranjang=<?php echo $row['id_keranjang']; ?>"  onclick="return confirm('Apakah anda yakin menghapus data ?')" style="border: 1px solid rgba(255, 255, 255, 0.1); padding: 5px; border-radius:10px;"><span class="icon-close"></span><b>×</b></a>
+                <td class="product-remove" style="padding-top:5%;padding-bottom:5%;"><a href="#" style="border: 1px solid rgba(255, 255, 255, 0.1); padding: 5px; border-radius:10px;"><span class="icon-close"></span><b>×</b></a>
                 </td>
 
                 <td class="image-prod">
@@ -99,7 +90,7 @@
                   <td>
                   <ul class="list-inline m-0">
                     <li class="list-inline-item">
-                      <a href="?page=keranjang&aksi=update&id_keranjang=<?php echo $row['id_keranjang']; ?>" title="Edit">
+                      <a href="" title="Edit">
                         <div style="background-color:green;" onMouseOver="this.style.backgroundColor='lightgreen'" onMouseOut="this.style.backgroundColor='green'">
                           <center>
                             <svg xmlns="http://www.w3.org/2000/svg" style="margin:9;" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16" color="#fff" style="padding:4%;">
@@ -122,23 +113,22 @@
 $juml_nilai = array_sum($subtotalsum);
 ?>
     <div class="row justify-content-end">
-      <div class="col col-lg-3 col-md-6 mt-5 cart-wrap ftco-animate" style="width: fit-content;">
-      	<div class="cart-total mb-3" style="display: block; border: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; padding-bottom: 20px; padding-left: 40px; padding-right: 40px;">
-      		<h3 style="font-size: 20px; text-transform: uppercase; text-align:center;">Total  Keranjang</h3>
+      <div class="col col-lg-3 col-md-6 mt-5 cart-wrap ftco-animate">
+      	<div class="cart-total mb-3" style="width: 100%; display: block; border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px;">
+      		<h3 style="font-size: 20px; text-transform: uppercase;">Total  Keranjang</h3>
       		<p class="d-flex total-price" style=" display: block;">
-          RP. &nbsp;
       			<!-- <span style="display: block; width: 50%; text-transform: uppercase;">Total</span> -->
-      			<span style="display: block; text-transform: uppercase; color: #c49b63; font-size:40px;"><?php echo $juml_nilai;?></span>
+      			<span style="display: block; text-transform: uppercase; color: #c49b63; font-size:40px;">RP. <?php echo $juml_nilai;?></span>
       		</p>
       	</div>
         <!-- <form action="" method="post" role="form" enctype='multipart/form-data'> -->
-      	<!-- <p class="text-center"><a href="?page=keranjang&aksi=checkout" class="btn btn-primary py-3 px-4" style="width:100%; background-color:#c49b63; border-color:#fff;"><b>Checkout</b></a></p> -->
+      	<p class="text-center"><a href="?page=keranjang&aksi=checkout" class="btn btn-primary py-3 px-4" style="width:100%; background-color:#c49b63; border-color:#fff;"><b>Checkout</b></a></p>
         <?php
         $username=$_SESSION['username'];
         $lihat_user = mysqli_fetch_array(mysqli_query($db_koneksi,"select * from tbl_user where username='$username'"));
         ?>
-        <input type="hidden" name="alamat_pengiriman" style="text-align:left;" value='<?php echo $lihat_user["alamat"];?>, <?php echo $lihat_user["kelurahan"];?>, kec. <?php echo $lihat_user["kecamatan"];?>, <?php echo $lihat_user["kota"];?>, <?php echo $lihat_user["kode_pos"];?>'>
-        <input type="submit" name="submit" style="width:100%; font-weight:bold; color:#fff; height:60px; border-radius:10px; background-color:#c49b63; border-color:#fff;" value="Checkout" onMouseOver="this.style.backgroundColor='#625b4b'" onMouseOut="this.style.backgroundColor='#cda45e'">
+        <input type="text" name="alamat_pengiriman" style="text-align:left;" value='<?php echo $lihat_user["alamat"];?>, <?php echo $lihat_user["kelurahan"];?>, kec. <?php echo $lihat_user["kecamatan"];?>, <?php echo $lihat_user["kota"];?>, <?php echo $lihat_user["kode_pos"];?>'>
+        <input type="submit" name="submit">
         </form>
         
       </div>
@@ -167,24 +157,12 @@ $juml_nilai = array_sum($subtotalsum);
 
             @$iduser=$_SESSION['username']; 
             $query_delete = mysqli_query($db_koneksi,"delete from tbl_keranjang where username='$iduser'");
-            echo "<center>";
-            echo "<br>";
-            echo "Halaman Keranjang telah checkout <br>";
-            echo '<span style="color:blue"><a href="?page=histori"><b><u><i>Lihat transaksi</i></u></b></a></span>';
-            echo "</center>";
+            // header("Location:?page=histori");
+            // echo "<script> alert('Produk telah tertambah di halaman histori');</script>";
+            echo "Data Telah tertambahkan ke transaksi! <br>";
+            echo '<span style="color:blue"><a href="?page=histori"><b><u><i>Lihat histori transaksi</i></u></b></a></span>';
 
           }
-        break; 
-      case "delete":
-        include "page_user/delete_produk_keranjang.php";
-        break;
-      case "update":
-        include "page_user/update_produk_keranjang.php";
-         break;
-      }
-    }else{
-      include "?page=keranjang";
-      }
-   ?> 
-  </div>
+        ?>
+   </div>
 </div>

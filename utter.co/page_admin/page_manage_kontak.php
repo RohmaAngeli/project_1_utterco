@@ -69,7 +69,7 @@
                   <ul class="list-inline">
                     
                     <li>
-                      <a title="Delete" href="?page=manage_user&aksi=delete&username=<?php echo $data['username']; ?>"  onclick="return confirm('Apakah anda yakin menghapus data <?php echo $data['username']; ?>?')">
+                      <a title="Delete" href="?page=manage_kontak&aksi=delete&id_kontak=<?php echo $data['id_kontak']; ?>"  onclick="return confirm('Apakah anda yakin menghapus data <?php echo $data['id_kontak']; ?>?')">
                         <div style="background-color:green;" onMouseOver="this.style.backgroundColor='lightgreen'" onMouseOut="this.style.backgroundColor='green'">
                           <center>
                             <svg xmlns="http://www.w3.org/2000/svg" style="margin:9;" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" color="#fff" style="padding:4%;">
@@ -89,14 +89,8 @@
     </div>
    <?php
       break; 
-      case "create":
-         include "page_admin/form_tambahmenu.php";
-         break;
-      case "update":
-         include "page_admin/update_menu.php";
-         break;
       case "delete":
-         include "page_admin/delete_menu.php";
+         include "page_admin/delete_kontak.php";
          break;
       }
     }else{
